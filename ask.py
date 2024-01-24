@@ -16,7 +16,10 @@ if height >= 120:
     elif 31 <= age <= 35:
         bill = 40
         print("Ticket is 40ghc")
-    
+
+    elif age >=45 and age<=55:
+        print("Ticket is free. Enjoy ur ride!")    
+
     want_photo = input("Do you want photos? Y or N \n")
     if want_photo == "Y":
         bill += 3
@@ -25,4 +28,3 @@ if height >= 120:
 
 else:
     print("Sorry, you can not ride the rollercoaster! You need a height of atleast 120cm to ride the rollercoaster.")
-    
