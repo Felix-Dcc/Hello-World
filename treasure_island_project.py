@@ -28,12 +28,13 @@ while True:
     choose = input("Choose a path. Left or Right? \n").lower()
     
     if choose == "right":
-        print("Game Over. You fell in a pit hole")
+        print(" You fell into a hole. Game Over!")
+        break
     elif choose == "left":
         next_step = input("Swim or wait? \n").lower()
         
         if next_step == "swim":
-            print("Game Over. You fell into the mist of crocodile")
+            print("You are attacked by trout. Game Over!")
             break
         elif next_step == "wait":
             door = input("Which door? Red, Blue or Yellow? \n").lower()
@@ -41,8 +42,11 @@ while True:
             if door == "yellow":
                 print("Congratulations, you won! The treasure box is yours :)")
                 break
-            else:
-                print("Game Over. You lost")
+            elif door == "red":  
+                print("You are burned by fire. Game Over!")
+                break
+            elif door == "blue":  
+                print("Eaten by beasts. Game Over!")
                 break
         else:
             print("Invalid input. Please enter 'Swim' or 'Wait'.")
