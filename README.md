@@ -1,6 +1,6 @@
 Welcome to AMP FELIX's GitHub!
 
-Hey there! I'm Felix, a Python enthusiast on a mission to craft elegant solutions to complex problems through code. My fascination with Python stems from its versatility – whether I'm building web applications, automating tasks, or analyzing data, Python empowers me to turn ideas into reality with simplicity and efficiency.
+Hey there! I'm Felix, a Python enthusiast and Gokang developer, I'm on a mission to craft elegant solutions to complex problems through code. My fascination with Python stems from its versatility – whether I'm building web applications, automating tasks, or analyzing data, Python empowers me to turn ideas into reality with simplicity and efficiency.
 
 My programming journey started with a curiosity to understand how technology shapes our world. As I delved deeper into Python, I discovered its endless possibilities and fell in love with its clean syntax and powerful libraries. From scripting small utilities to developing scalable applications, Python has been my go-to tool for transforming concepts into tangible results.
 Outside of coding, you'll often find me exploring the latest trends in tech, diving into open-source projects, or immersing myself in a good book on software engineering.
