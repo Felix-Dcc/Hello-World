@@ -2,6 +2,19 @@
 (function () {
   'use strict';
 
+  // One submission per page: a second click or keypress before the next page
+  // arrives would race the first, and both carry the same session cookie.
+  document.querySelectorAll('form[method=post]').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      if (form.dataset.busy) { e.preventDefault(); return; }
+      form.dataset.busy = '1';
+    });
+  });
+  // Coming Back to a page from the back/forward cache: make its forms usable again.
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('form[data-busy]').forEach(function (f) { delete f.dataset.busy; });
+  });
+
   // Hangman: type letters on the physical keyboard.
   var board = document.querySelector('[data-hangman]');
   if (board) {

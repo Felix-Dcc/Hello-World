@@ -47,6 +47,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* Author display rules (e.g. .btn) would otherwise override the attribute. */
+[hidden] { display: none !important; }
 body {
   margin: 0;
   font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -86,6 +88,7 @@ main.wrap { padding-top: 28px; padding-bottom: 40px; }
          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 .project-card {
   display: grid; gap: 4px; height: 100%; padding: 18px; text-decoration: none; color: var(--text);
+  grid-template-rows: auto auto 1fr auto;   /* icon and title top, script name bottom */
   transition: transform .15s ease, border-color .15s ease;
 }
 .project-card:hover { transform: translateY(-2px); border-color: var(--primary); }
@@ -156,7 +159,14 @@ fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
 .big-number { font-size: clamp(2rem, 6vw, 2.8rem); font-weight: 750; letter-spacing: -.02em; margin: 0; }
 .result-text { font-size: 1.05rem; }
 meter { width: 100%; height: 14px; margin: 10px 0 4px; }
-.scale-labels { display: flex; justify-content: space-between; color: var(--text-2); font-size: .75rem; font-family: var(--mono); }
+/* Columns sized to each BMI band on the 15-40 meter: 3.5, 6.5, 5 and 10 units. */
+.scale-labels {
+  display: grid; grid-template-columns: 3.5fr 6.5fr 5fr 10fr;
+  color: var(--text-2); font-size: .75rem; font-family: var(--mono); margin-bottom: 12px;
+}
+.scale-labels > span { display: grid; border-left: 1px solid var(--border); padding-left: 4px; }
+.scale-labels > span:last-child { grid-template-columns: 1fr auto; align-items: start; }
+.scale-labels > span > span { display: grid; }
 .table { width: 100%; border-collapse: collapse; }
 .table th, .table td { text-align: left; padding: 8px 4px; border-bottom: 1px solid var(--border); }
 .table .num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -186,6 +196,7 @@ meter { width: 100%; height: 14px; margin: 10px 0 4px; }
   text-transform: uppercase; border-bottom: 3px solid var(--text); background: var(--surface-2); border-radius: 6px 6px 0 0;
 }
 .misses { color: var(--text-2); margin: 0; }
+@media (hover: none) { .keyboard-tip { display: none; } }
 .keyboard { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); margin-bottom: 8px; }
 .key {
   font: 700 1.05rem var(--mono); height: 48px; border-radius: 10px; cursor: pointer;

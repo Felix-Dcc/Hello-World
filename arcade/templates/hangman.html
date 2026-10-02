@@ -8,10 +8,12 @@
   <section class="card hangman-board">
     <pre class="gallows" aria-hidden="true">{{ game.picture.strip('\n') }}</pre>
     <div>
-      <p class="lives" aria-label="{{ game.lives }} of {{ max_lives }} lives left">
+      <p class="lives">
+        <span class="sr-only">{{ game.lives }} of {{ max_lives }} lives left.</span>
         {% for i in range(max_lives) %}<span aria-hidden="true" class="{{ 'heart' if i < game.lives else 'heart lost' }}">♥</span>{% endfor %}
       </p>
-      <p class="word" aria-label="The word so far: {{ game.masked|join(' ') }}">
+      <p class="word">
+        <span class="sr-only">The word so far: {% for c in game.masked %}{{ 'blank' if c == '_' else c }}{{ ', ' if not loop.last }}{% endfor %}.</span>
         {% for c in game.masked %}<span class="tile{{ ' blank' if c == '_' }}" aria-hidden="true">{{ '' if c == '_' else c }}</span>{% endfor %}
       </p>
       {% if game.misses %}<p class="misses">Misses: <strong>{{ game.misses|join(' ')|upper }}</strong></p>{% endif %}
@@ -34,7 +36,7 @@
         </button>
       {% endfor %}
     </form>
-    <p class="hint center">Tip: you can type letters on your keyboard too.</p>
+    <p class="hint center keyboard-tip">Tip: you can type letters on your keyboard too.</p>
     <form method="post" class="center"><button class="btn btn-ghost" name="action" value="new">New word</button></form>
   {% endif %}
 </div>

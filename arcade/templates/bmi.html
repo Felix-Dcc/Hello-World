@@ -18,7 +18,9 @@
   <p class="result-text">Your BMI is {{ '%.1f'|format(result.value) }}: {{ result.description }}.</p>
   <meter class="bmi-meter" min="15" max="40" low="18.5" high="25" optimum="21.7"
     value="{{ [[result.value, 15]|max, 40]|min }}" aria-label="BMI on a scale from 15 to 40"></meter>
-  <div class="scale-labels" aria-hidden="true"><span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span></div>
+  <div class="scale-labels" aria-hidden="true">
+    <span>15<small>Under</small></span><span>18.5<small>Normal</small></span><span>25<small>Over</small></span><span><span>30<small>Obese</small></span>40</span>
+  </div>
   <p class="hint">BMI is a rough guide for adults; it doesn’t account for muscle, age or build.</p>
 </section>
 {% endif %}

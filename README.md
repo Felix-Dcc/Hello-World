@@ -6,6 +6,60 @@ My programming journey started with a curiosity to understand how technology sha
 Outside of coding, you'll often find me exploring the latest trends in tech, diving into open-source projects, or immersing myself in a good book on software engineering.
 
 
+## The projects
+
+Twelve small Python programs. Every one runs in the terminal, and all of them
+also run together as a small web app.
+
+### Try them in your browser
+
+```bash
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python -m arcade
+```
+
+Then open http://127.0.0.1:5000.
+
+### Or in the terminal
+
+| Project | Terminal |
+|---|---|
+| Hangman | `python Hangman.py` |
+| Rock, paper, scissors | `python main.py` |
+| Treasure Island | `python treasure_island_project.py` |
+| Password generator | `python pass_gen_project.py` |
+| BMI calculator | `python bmi_calculator.py` |
+| Leap year checker | `python leap_year_checker.py` |
+| Chemical formula lookup (needs internet) | `python ChemicalFormula.py` |
+| ATM (demo PIN 2050) | `python prompt.py` |
+| Python Pizza | `python pizza_delivery_test.py` |
+| Rollercoaster tickets | `python ask.py` |
+| Love calculator | `python love_calculator.py` |
+| Christmas tree | `python ChristmasTree.py` |
+
+### How it's organised
+
+```
+projects/       the logic of every project: no input() or print()
+*.py            the terminal versions, thin wrappers around projects/
+arcade/         the web app (Flask): one page per project
+tests/          pytest: the logic, every terminal script, every web page
+Examination/    a separate A-Frame VR project, with its own README
+```
+
+Because the terminal scripts and the web pages call the same code in
+`projects/`, a fix in one place reaches both.
+
+### Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+
 ## How to Reach Me
 
 - **Email**: Oseipokufelix0@gmail.com

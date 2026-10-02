@@ -61,7 +61,7 @@ def test_hangman_does_not_reveal_the_word_while_playing(client):
     start_hangman(client, 'zephyr')
     html = text(client.get('/hangman'))
     assert 'zephyr' not in html.lower()
-    assert 'The word so far: _ _ _ _ _ _' in html
+    assert 'The word so far: blank, blank, blank, blank, blank, blank.' in html
 
 
 def test_hangman_hit_miss_repeat(client):
@@ -69,9 +69,9 @@ def test_hangman_hit_miss_repeat(client):
     html = text(client.post('/hangman', data={'letter': 'e'}, follow_redirects=True))
     assert '“e” is in the word' in html
     html = text(client.post('/hangman', data={'letter': 'q'}, follow_redirects=True))
-    assert 'No “q”' in html and 'aria-label="5 of 6 lives left"' in html
+    assert 'No “q”' in html and '5 of 6 lives left.' in html
     html = text(client.post('/hangman', data={'letter': 'q'}, follow_redirects=True))
-    assert 'already guessed “q”' in html and 'aria-label="5 of 6 lives left"' in html
+    assert 'already guessed “q”' in html and '5 of 6 lives left.' in html
     html = text(client.post('/hangman', data={'letter': 'ab'}, follow_redirects=True))
     assert 'single letter' in html
 
@@ -82,7 +82,7 @@ def test_hangman_win_and_play_again(client):
         html = text(client.post('/hangman', data={'letter': letter}, follow_redirects=True))
     assert 'You win!' in html and 'Play again' in html
     html = text(client.post('/hangman', data={'action': 'new'}, follow_redirects=True))
-    assert 'You win!' not in html and 'lives left' in html
+    assert 'You win!' not in html and '6 of 6 lives left.' in html
 
 
 def test_hangman_loss_shows_the_word(client):
