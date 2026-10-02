@@ -1,46 +1,28 @@
-import random
-from hangman_art import logo, stages
-from hangman_words import word_list
-
-chosen_word = random.choice(word_list)
-
-lives = 6
-
-print(logo)
-#Testing code
-print(f'Pssst, the solution is {chosen_word}.')
-
-display = []
-for letter in chosen_word:
-    display.append("_")
-print(display)
-
-end_of_game = False
-while not end_of_game:
-  guess = input("Guess a letter: ").lower()
-
-  if guess in display:
-     print(f"You've already guessed this letter, {guess}.")
-
-  for i in range(len(chosen_word)):
-    if chosen_word[i] == guess:
-        display[i] = guess
-
-  print(display) 
-
-  if guess not in chosen_word:
-   print(f"{guess} is not in the word. You lose a life")
-   lives -= 1
-   if lives == 0:
-      end_of_game = True
-      print("You lose")
-
-   print(f"{' '.join(display)}")
+from hangman_art import logo
+from projects.hangman import Hangman
+from terminal import run
 
 
-  if "_" not in display:
-     end_of_game = True
-     print("You win")
+def main():
+    game = Hangman.new()
+    print(logo)
+    print(' '.join(game.masked))
 
-  print(stages[lives])
+    while not game.over:
+        guess = input('Guess a letter: ').strip().lower()
+        result = game.guess(guess)
+        if result == 'invalid':
+            print('Please type a single letter.')
+            continue
+        if result == 'repeat':
+            print(f"You've already guessed {guess}.")
+        elif result == 'miss':
+            print(f'{guess} is not in the word. You lose a life.')
+        print(' '.join(game.masked))
+        print(game.picture)
 
+    print('You win!' if game.won else f'You lose. The word was {game.word}.')
+
+
+if __name__ == '__main__':
+    run(main)

@@ -11,7 +11,7 @@ class Cat(Animals):
     
 class Dog(Animals):
     def speak(self):
-        return(f"{self.name} says wolf")
+        return(f"{self.name} says woof")
     
 dog_animal = Dog("Buddy")
 cat_animal = Cat("Paula") 

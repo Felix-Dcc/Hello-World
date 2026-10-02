@@ -1,29 +1,17 @@
 #Just for fun!
-print("The love calculator is calculating your score... ")
+from projects.love import love_score, verdict
+from terminal import run
 
-name1 = input("What is your name? ")
-name2 = input("What is their name? ")
 
-combine_names = name1 + name2
-lower_names = combine_names.lower()
+def main():
+    print('The love calculator is calculating your score... ')
+    name1 = input('What is your name? ')
+    name2 = input('What is their name? ')
 
-t = lower_names.count("t")
-r = lower_names.count("r")
-u = lower_names.count("u")
-e = lower_names.count("e")
-first_digit = t+r+u+e
+    score = love_score(name1, name2)
+    message = verdict(score)
+    print(f'Your score is {score}, {message}.' if message else f'Your score is {score}.')
 
-l = lower_names.count("l")
-o = lower_names.count("o")
-v = lower_names.count("v")
-e = lower_names.count("e")
-second_digit = l+o+v+e
 
-score = int(str(first_digit) + str(second_digit))
-
-if (score < 10) or (score > 90):
-    print(f"Your score is {score}, you go together like coke and bread")
-elif (score >= 40) and (score <= 50):
-    print(f"Your score is {score}, you look alright together.")
-else:
-    print(f"Your score is {score}.")
+if __name__ == '__main__':
+    run(main)

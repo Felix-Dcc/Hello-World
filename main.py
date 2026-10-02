@@ -1,4 +1,5 @@
-import random
+from projects.rps import CHOICES, computer_choice, outcome
+from terminal import ask, run, whole_number
 
 rock = '''
     _______
@@ -27,31 +28,21 @@ scissors = '''
 ---.__(___)
 '''
 
-user_choice = int(input("What do you choose? Type 0 for rock, 1 for paper, 2 for scissors.\n"))
+ART = {'rock': rock, 'paper': paper, 'scissors': scissors}
+RESULT = {'win': 'You win!', 'lose': 'Computer wins!', 'draw': "It's a draw!"}
 
-if user_choice == 0:
-    print(rock)
-elif user_choice == 1:
-    print(paper)
-else:
-    print(scissors)
 
-computer_choice = random.choice(["0", "1", "2"])
+def main():
+    number = ask('What do you choose? Type 0 for rock, 1 for paper, 2 for scissors.\n',
+                 whole_number(0, 2), 'Please type 0, 1 or 2.')
+    player = CHOICES[number]
+    print(ART[player])
 
-if computer_choice == "0":
-    print("Computer chose:\n", rock)
-elif computer_choice == "1":
-    print("Computer chose:\n", paper)
-else:
-    print("Computer chose:\n", scissors)
+    computer = computer_choice()
+    print('Computer chose:\n', ART[computer])
 
-if user_choice == computer_choice:
-    print("It's a draw!")
-elif user_choice == "0" and computer_choice == "1":
-    print("Computer wins!")
-elif user_choice == "1" and computer_choice == "2":
-    print("Computer wins!")
-elif user_choice == "2" and computer_choice == "0":
-    print("Computer wins!")
-else:
-    print("You win!")
+    print(RESULT[outcome(player, computer)])
+
+
+if __name__ == '__main__':
+    run(main)
