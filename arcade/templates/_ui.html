@@ -1,0 +1,39 @@
+{# Shared building blocks for the project pages. #}
+
+{% macro page_head(project) %}
+<header class="page-head">
+  <span class="page-icon" aria-hidden="true">{{ project.icon }}</span>
+  <div>
+    <h1>{{ project.title }}</h1>
+    <p class="lede">{{ project.blurb }}</p>
+  </div>
+</header>
+{% endmacro %}
+
+{% macro flashes() %}
+<div class="flashes" role="status" aria-live="polite">
+  {% for kind, message in get_flashed_messages(with_categories=true) %}
+    <p class="alert alert-{{ kind }}">{{ message }}</p>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro error_box(error) %}
+{% if error %}<p class="alert alert-error" role="alert" id="form-error">{{ error }}</p>{% endif %}
+{% endmacro %}
+
+{% macro field(name, label, value='', type='text', hint='', error=None, id=None) %}
+{% set id = id or name %}
+<div class="field">
+  <label for="{{ id }}">{{ label }}</label>
+  <input id="{{ id }}" name="{{ name }}" type="{{ type }}" value="{{ value }}"
+    {%- if hint %} aria-describedby="{{ id }}-hint"{% endif %}
+    {%- if error %} aria-invalid="true"{% endif %}
+    {%- for key, val in kwargs.items() %} {{ key|replace('_', '-') }}="{{ val }}"{% endfor %}>
+  {% if hint %}<p class="hint" id="{{ id }}-hint">{{ hint }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro terminal_note(project) %}
+<p class="terminal-note">Prefer the terminal? Run <code>python {{ project.script }}</code></p>
+{% endmacro %}

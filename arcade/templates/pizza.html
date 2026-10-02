@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+
+<form method="get" class="card form" {% if error %}aria-describedby="form-error"{% endif %}>
+  {{ ui.error_box(error) }}
+  <fieldset>
+    <legend>Size</legend>
+    <div class="option-cards">
+      {% for key, (name, price) in sizes.items() %}
+      <label class="option-card">
+        <input type="radio" name="size" value="{{ key }}" required {{ 'checked' if args.get('size', 'M')|upper == key }}>
+        <span class="option-title">{{ name }}</span>
+        <span class="option-price">${{ price }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Toppings</legend>
+    <label class="check"><input type="checkbox" name="pepperoni" {{ 'checked' if args.get('pepperoni') == 'on' }}>
+      Pepperoni <span class="hint">+${{ pepperoni['S'] }} on a small, +${{ pepperoni['M'] }} on medium or large</span></label>
+    <label class="check"><input type="checkbox" name="cheese" {{ 'checked' if args.get('cheese') == 'on' }}>
+      Extra cheese <span class="hint">+${{ cheese }}</span></label>
+  </fieldset>
+  <button class="btn btn-primary">See my bill</button>
+</form>
+
+{% if order %}
+<section class="card result" role="status">
+  <h2 class="card-heading">Your order</h2>
+  <table class="table receipt">
+    <tbody>
+      {% for name, price in order['items'] %}<tr><td>{{ name }}</td><td class="num">${{ price }}</td></tr>{% endfor %}
+    </tbody>
+    <tfoot><tr><th scope="row">Total</th><td class="num">${{ order.total }}</td></tr></tfoot>
+  </table>
+  <p>Thank you for choosing Python Pizza Deliveries!</p>
+</section>
+{% endif %}
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

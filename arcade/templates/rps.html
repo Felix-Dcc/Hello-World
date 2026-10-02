@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+{{ ui.flashes() }}
+
+<form method="post" class="choices" aria-label="Your move">
+  {% for choice in choices %}
+    <button class="choice" name="choice" value="{{ choice }}">
+      <span class="choice-icon" aria-hidden="true">{{ icons[choice] }}</span>
+      <span>{{ choice|title }}</span>
+    </button>
+  {% endfor %}
+</form>
+
+{% if last %}
+<section class="card result result-{{ last.result }}" role="status">
+  <div class="versus">
+    <div><span class="versus-icon" aria-hidden="true">{{ icons[last.player] }}</span><span>You: {{ last.player|title }}</span></div>
+    <span class="versus-vs" aria-hidden="true">vs</span>
+    <div><span class="versus-icon" aria-hidden="true">{{ icons[last.computer] }}</span><span>Computer: {{ last.computer|title }}</span></div>
+  </div>
+  <h2>{{ results[last.result] }}</h2>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2 class="card-heading">Score</h2>
+  <dl class="scoreboard">
+    <div><dt>You</dt><dd>{{ score.win }}</dd></div>
+    <div><dt>Draws</dt><dd>{{ score.draw }}</dd></div>
+    <div><dt>Computer</dt><dd>{{ score.lose }}</dd></div>
+  </dl>
+  {% if score.win or score.lose or score.draw %}
+  <form method="post"><button class="btn btn-ghost" name="action" value="reset">Reset score</button></form>
+  {% endif %}
+</section>
+
+{{ ui.terminal_note(project) }}
+{% endblock %}
