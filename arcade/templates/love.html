@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+
+<form method="get" class="card form" {% if error %}aria-describedby="form-error"{% endif %}>
+  {{ ui.error_box(error) }}
+  <div class="field-row">
+    {{ ui.field('name1', 'Your name', name1, maxlength=60, required='required', autocomplete='off', error=error) }}
+    {{ ui.field('name2', 'Their name', name2, maxlength=60, required='required', autocomplete='off', error=error) }}
+  </div>
+  <button class="btn btn-primary">Calculate</button>
+</form>
+
+{% if result %}
+<section class="card result result-love" role="status">
+  <p class="big-number">{{ result.score }}</p>
+  <meter class="love-meter" min="0" max="100" value="{{ [result.score, 100]|min }}" aria-label="Love score"></meter>
+  <p class="result-text">{{ name1 }} + {{ name2 }}: your score is {{ result.score }}{{ ', ' ~ result.verdict if result.verdict }}.</p>
+  <p class="hint">How it works: count the letters of TRUE in both names, then the letters of LOVE, and put the two numbers side by side.</p>
+</section>
+{% endif %}
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

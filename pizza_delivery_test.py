@@ -1,28 +1,18 @@
-print("Thank you for choosing Python Pizza Deliveries!")
-
-size = input("What size pizza do you want? S, M, or L?")
-add_pepperoni = input("Do you want pepperoni? Y or N?")
-extra_cheese = input("Do you want extra cheese? Y or N?")
-
-bill = 0
-if size == "S":
-    bill += 15
-elif size == "M":
-    bill += 20
-elif size == "L":
-    bill += 25
-
-if add_pepperoni == "Y":
-    if size == "S":
-        bill += 2
-    else:
-        bill += 3
-
-if extra_cheese == "Y":
-    bill += 1
-
-print(f"Your final bill is: ${bill}.")
+from projects.pizza import parse_size, quote
+from terminal import ask, run, yes_no
 
 
+def main():
+    print('Thank you for choosing Python Pizza Deliveries!')
+    size = ask('What size pizza do you want? S, M, or L? ', parse_size)
+    pepperoni = ask('Do you want pepperoni? Y or N? ', yes_no)
+    cheese = ask('Do you want extra cheese? Y or N? ', yes_no)
+
+    items, total = quote(size, pepperoni, cheese)
+    for name, price in items:
+        print(f'  {name:<14} ${price}')
+    print(f'Your final bill is: ${total}.')
 
 
+if __name__ == '__main__':
+    run(main)

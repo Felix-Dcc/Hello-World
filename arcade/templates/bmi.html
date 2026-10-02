@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+
+<form method="post" class="card form" {% if error %}aria-describedby="form-error"{% endif %}>
+  {{ ui.error_box(error) }}
+  <div class="field-row">
+    {{ ui.field('height', 'Height (cm)', values.height, 'number', hint='For example 175', min=50, max=275, step='any', inputmode='decimal', required='required', error=error) }}
+    {{ ui.field('weight', 'Weight (kg)', values.weight, 'number', hint='For example 70.5', min=2, max=650, step='any', inputmode='decimal', required='required', error=error) }}
+  </div>
+  <button class="btn btn-primary">Calculate BMI</button>
+</form>
+
+{% if result %}
+<section class="card result bmi-{{ result.key }}" role="status">
+  <p class="big-number">{{ '%.1f'|format(result.value) }}</p>
+  <p class="result-text">Your BMI is {{ '%.1f'|format(result.value) }}: {{ result.description }}.</p>
+  <meter class="bmi-meter" min="15" max="40" low="18.5" high="25" optimum="21.7"
+    value="{{ [[result.value, 15]|max, 40]|min }}" aria-label="BMI on a scale from 15 to 40"></meter>
+  <div class="scale-labels" aria-hidden="true">
+    <span>15<small>Under</small></span><span>18.5<small>Normal</small></span><span>25<small>Over</small></span><span><span>30<small>Obese</small></span>40</span>
+  </div>
+  <p class="hint">BMI is a rough guide for adults; it doesn’t account for muscle, age or build.</p>
+</section>
+{% endif %}
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

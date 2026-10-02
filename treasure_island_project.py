@@ -1,56 +1,23 @@
-print('''
-*******************************************************************************
-          |                   |                  |                     |
- _________|________________.=""_;=.______________|_____________________|_______
-|                   |  ,-"_,=""     `"=.|                  |
-|___________________|__"=._o`"-._        `"=.______________|___________________
-          |                `"=._o`"=._      _`"=._                     |
- _________|_____________________:=._o "=._."_.-="'"=.__________________|_______
-|                   |    __.--" , ; `"=._o." ,-"""-._ ".   |
-|___________________|_._"  ,. .` ` `` ,  `"-._"-._   ". '__|___________________
-          |           |o`"=._` , "` `; .". ,  "-._"-._; ;              |
- _________|___________| ;`-.o`"=._; ." ` '`."\` . "-._ /_______________|_______
-|                   | |o;    `"-.o`"=._``  '` " ,__.--o;   |
-|___________________|_| ;     (#) `-.o `"=.`_.--"_o.-; ;___|___________________
-____/______/______/___|o;._    "      `".o|o_.--"    ;o;____/______/______/____
-/______/______/______/_"=._o--._        ; | ;        ; ;/______/______/______/_
-____/______/______/______/__"=._o--._   ;o|o;     _._;o;____/______/______/____
-/______/______/______/______/____"=._o._; | ;_.--"o.--"_/______/______/______/_
-____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
-/______/______/______/______/______/______/______/______/______/______/_____ /
-*******************************************************************************
-''')
+from projects.treasure_island import BANNER, START, STORY, Ending, step
+from terminal import run
 
-print("""  Welcome to Treasure Island.
+
+def main():
+    print(BANNER)
+    print("""  Welcome to Treasure Island.
 Your mission is to find the treasure!
       """)
-while True:
-    choose = input("Choose a path. Left or Right? \n").lower()
-    
-    if choose == "right":
-        print(" You fell into a hole. Game Over!")
-        break
-    elif choose == "left":
-        next_step = input("Swim or wait? \n").lower()
-        
-        if next_step == "swim":
-            print("You are attacked by trout. Game Over!")
-            break
-        elif next_step == "wait":
-            door = input("Which door? Red, Blue or Yellow? \n").lower()
-            
-            if door == "yellow":
-                print("Congratulations, you won! The treasure box is yours :)")
-                break
-            elif door == "red":  
-                print("You are burned by fire. Game Over!")
-                break
-            elif door == "blue":  
-                print("Eaten by beasts. Game Over!")
-                break
-        else:
-            print("Invalid input. Please enter 'Swim' or 'Wait'.")
-    else:
-        print("Invalid input. Please enter 'Left' or 'Right'.")
+
+    scene = START
+    while not isinstance(STORY[scene], Ending):
+        answer = input(STORY[scene].prompt + ' \n')
+        try:
+            scene = step(scene, answer)
+        except ValueError as e:
+            print(e)          # ask the same question again
+
+    print(STORY[scene].message)
 
 
+if __name__ == '__main__':
+    run(main)

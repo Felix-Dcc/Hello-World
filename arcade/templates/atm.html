@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+{{ ui.flashes() }}
+
+{% if account %}
+  <section class="card atm-balance">
+    <p class="result-label">Available balance</p>
+    <p class="big-number">{{ money(account.balance) }}</p>
+  </section>
+
+  <div class="grid-2">
+    <form method="post" class="card form">
+      <h2 class="card-heading">Deposit</h2>
+      {{ ui.field('amount', 'Amount (GHS)', '', 'number', id='deposit-amount', min='0.01', step='0.01', inputmode='decimal', required='required') }}
+      <button class="btn btn-primary" name="action" value="deposit">Deposit</button>
+    </form>
+    <form method="post" class="card form">
+      <h2 class="card-heading">Withdraw</h2>
+      {{ ui.field('amount', 'Amount (GHS)', '', 'number', id='withdraw-amount', min='0.01', step='0.01', inputmode='decimal', required='required') }}
+      <button class="btn btn-primary" name="action" value="withdraw">Withdraw</button>
+    </form>
+  </div>
+
+  {% if account.history %}
+  <section class="card">
+    <h2 class="card-heading">Recent transactions</h2>
+    <table class="table">
+      <thead><tr><th scope="col">Type</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Balance after</th></tr></thead>
+      <tbody>
+        {% for kind, amount, balance in account.history|reverse %}
+        <tr><td>{{ kind }}</td><td class="num">{{ money(amount|float) }}</td><td class="num">{{ money(balance|float) }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+
+  <form method="post" class="center"><button class="btn btn-ghost" name="action" value="exit">Take card and exit</button></form>
+
+{% elif locked %}
+  <section class="card result result-lose" role="alert">
+    <h2>Card retained</h2>
+    <p>Too many wrong PIN attempts.</p>
+    <form method="post"><button class="btn btn-primary" name="action" value="reset">Reset the demo</button></form>
+  </section>
+
+{% else %}
+  <form method="post" class="card form pin-form">
+    <h2 class="card-heading">Insert your card</h2>
+    {{ ui.field('pin', 'PIN', '', 'password', hint='This is a demo account: the PIN is ' ~ demo_pin ~ '. ' ~ attempts_left ~ ' attempt' ~ ('s' if attempts_left != 1 else '') ~ ' left.', inputmode='numeric', autocomplete='off', maxlength=8, required='required', autofocus='autofocus') }}
+    <button class="btn btn-primary" name="action" value="pin">Enter</button>
+  </form>
+{% endif %}
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+
+<div class="grid-2 align-start">
+  <form method="get" class="card form" {% if error %}aria-describedby="form-error"{% endif %}>
+    {{ ui.error_box(error) }}
+    {{ ui.field('height', 'Height (cm)', args.get('height', ''), 'number', hint='You must be at least ' ~ min_height ~ ' cm tall', min=50, max=250, inputmode='numeric', required='required', error=error) }}
+    {{ ui.field('age', 'Age', args.get('age', ''), 'number', min=1, max=120, inputmode='numeric', error=error) }}
+    <label class="check"><input type="checkbox" name="photo" {{ 'checked' if args.get('photo') == 'on' }}>
+      Add ride photos <span class="hint">+GHS {{ photo_price }}</span></label>
+    <button class="btn btn-primary">Get my ticket</button>
+  </form>
+
+  <section class="card">
+    <h2 class="card-heading">Ticket prices</h2>
+    <table class="table">
+      <thead><tr><th scope="col">Age</th><th scope="col" class="num">Price</th></tr></thead>
+      <tbody>{% for ages, price in prices %}<tr><td>{{ ages }}</td><td class="num">{{ price }}</td></tr>{% endfor %}</tbody>
+    </table>
+  </section>
+</div>
+
+{% if result %}
+<section class="card result {{ 'result-win' if result.can_ride else 'result-lose' }}" role="status">
+  {% if result.can_ride %}
+    <h2>You can ride the rollercoaster! 🎢</h2>
+    <table class="table receipt">
+      <tbody>
+        <tr><td>Ticket</td><td class="num">{{ 'GHS %d'|format(result.ticket) if result.ticket else 'Free — enjoy your ride!' }}</td></tr>
+        {% if result.photo %}<tr><td>Photos</td><td class="num">GHS {{ result.photo }}</td></tr>{% endif %}
+      </tbody>
+      <tfoot><tr><th scope="row">Total</th><td class="num">GHS {{ result.total }}</td></tr></tfoot>
+    </table>
+  {% else %}
+    <h2>Sorry, you can’t ride yet</h2>
+    <p>You need to be at least {{ min_height }} cm tall to ride the rollercoaster.</p>
+  {% endif %}
+</section>
+{% endif %}
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

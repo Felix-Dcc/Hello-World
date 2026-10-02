@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+{{ ui.flashes() }}
+
+<div class="hangman" data-hangman>
+  <section class="card hangman-board">
+    <pre class="gallows" aria-hidden="true">{{ game.picture.strip('\n') }}</pre>
+    <div>
+      <p class="lives">
+        <span class="sr-only">{{ game.lives }} of {{ max_lives }} lives left.</span>
+        {% for i in range(max_lives) %}<span aria-hidden="true" class="{{ 'heart' if i < game.lives else 'heart lost' }}">♥</span>{% endfor %}
+      </p>
+      <p class="word">
+        <span class="sr-only">The word so far: {% for c in game.masked %}{{ 'blank' if c == '_' else c }}{{ ', ' if not loop.last }}{% endfor %}.</span>
+        {% for c in game.masked %}<span class="tile{{ ' blank' if c == '_' }}" aria-hidden="true">{{ '' if c == '_' else c }}</span>{% endfor %}
+      </p>
+      {% if game.misses %}<p class="misses">Misses: <strong>{{ game.misses|join(' ')|upper }}</strong></p>{% endif %}
+    </div>
+  </section>
+
+  {% if game.over %}
+    <section class="card result {{ 'result-win' if game.won else 'result-lose' }}" role="status">
+      <h2>{{ 'You win! 🎉' if game.won else 'Out of lives' }}</h2>
+      <p>The word was <strong>{{ game.word }}</strong>.</p>
+      <form method="post"><button class="btn btn-primary" name="action" value="new" autofocus>Play again</button></form>
+    </section>
+  {% else %}
+    <form method="post" class="keyboard" aria-label="Guess a letter">
+      {% for letter in alphabet %}
+        {% set used = letter in game.guessed %}
+        <button class="key{% if used %}{{ ' key-hit' if letter in game.word else ' key-miss' }}{% endif %}"
+          name="letter" value="{{ letter }}" data-letter="{{ letter }}" {{ 'disabled' if used }}>
+          {{ letter|upper }}{% if used %}<span class="sr-only">{{ ', in the word' if letter in game.word else ', not in the word' }}</span>{% endif %}
+        </button>
+      {% endfor %}
+    </form>
+    <p class="hint center keyboard-tip">Tip: you can type letters on your keyboard too.</p>
+    <form method="post" class="center"><button class="btn btn-ghost" name="action" value="new">New word</button></form>
+  {% endif %}
+</div>
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

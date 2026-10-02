@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+
+<form method="get" class="card form inline-form" {% if error %}aria-describedby="form-error"{% endif %}>
+  {{ ui.error_box(error) }}
+  {{ ui.field('formula', 'Chemical formula', formula, hint='Element symbols start with a capital letter, for example C6H6', autocapitalize='off', spellcheck='false', required='required', maxlength=40, error=error) }}
+  <button class="btn btn-primary">Look up</button>
+</form>
+<p class="chips">Try:
+  {% for ex in examples %}<a class="chip" href="?formula={{ ex }}">{{ ex }}</a>{% endfor %}
+</p>
+
+{% if compound %}
+<section class="card result" role="status">
+  <h2>{{ compound.common_name or compound.name or compound.formula }}</h2>
+  <dl class="facts">
+    <div><dt>Formula</dt><dd class="mono">{{ compound.formula }}</dd></div>
+    <div><dt>IUPAC name</dt><dd>{{ compound.name or 'Not listed' }}</dd></div>
+    <div><dt>Common name</dt><dd>{{ compound.common_name or 'Not listed' }}</dd></div>
+    <div><dt>Molecular weight</dt><dd>{{ compound.weight }} g/mol</dd></div>
+  </dl>
+  <a class="btn btn-ghost" href="{{ compound.url }}" rel="noopener noreferrer" target="_blank">View on PubChem ↗</a>
+</section>
+{% endif %}
+<p class="hint">Data from <a href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a>. A formula can match many compounds; this shows the first one PubChem lists.</p>
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

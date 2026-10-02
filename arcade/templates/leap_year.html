@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+
+<form method="get" class="card form inline-form" {% if error %}aria-describedby="form-error"{% endif %}>
+  {{ ui.error_box(error) }}
+  {{ ui.field('year', 'Year', year, 'number', min=1, max=9999, inputmode='numeric', required='required', error=error) }}
+  <button class="btn btn-primary">Check</button>
+</form>
+
+{% if result %}
+<section class="card result {{ 'result-win' if result.leap else 'result-neutral' }}" role="status">
+  <h2>{{ result.year }} {{ 'is a leap year' if result.leap else 'is not a leap year' }}</h2>
+  <p>{{ result.reason }}</p>
+  <p class="hint">A year is a leap year if it divides by 4, except century years, which must also divide by 400. The next leap year is {{ result.next }}.</p>
+</section>
+{% endif %}
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

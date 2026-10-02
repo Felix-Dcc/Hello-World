@@ -1,17 +1,16 @@
-# Enter your height in meters e.g 1.76
-height = float(input("What is your height? "))
-# Enter your weight in kilograms e.g 65
-weight = int(input("What is your weight? "))
+from projects.bmi import bmi, category, parse_height, parse_weight
+from terminal import ask, run
 
-bmi = weight / (height * height)
 
-if bmi < 18.5:
-  print(f"Your BMI is {bmi}, you are underweight.")
-elif bmi < 25:
-  print(f"Your BMI is {bmi}, you have a normal weight.")
-elif bmi < 30:
-  print(f"Your BMI is {bmi}, you are slightly overweight.")
-elif bmi < 35:
-  print(f"Your BMI is {bmi}, you are obese.")
-else:
-  print(f"Your BMI is {bmi}, you are clinincally obese.")
+def main():
+    height = ask('What is your height in metres (e.g. 1.76)? ', parse_height,
+                 'Please type a height between 0.5 and 2.75 metres, e.g. 1.76.')
+    weight = ask('What is your weight in kg (e.g. 65)? ', parse_weight,
+                 'Please type a weight between 2 and 650 kg, e.g. 65.')
+
+    value = bmi(height, weight)
+    print(f'Your BMI is {value:.1f}, {category(value)[1]}.')
+
+
+if __name__ == '__main__':
+    run(main)

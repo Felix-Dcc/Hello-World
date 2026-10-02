@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+
+<form method="get" class="card form inline-form" data-autosubmit>
+  <div class="field">
+    <label for="levels">Height: <output for="levels" data-output-for="levels">{{ levels }}</output> levels</label>
+    <input id="levels" name="levels" type="range" min="3" max="15" value="{{ levels }}">
+  </div>
+  <button class="btn btn-primary" data-hide-with-js>Grow</button>
+</form>
+
+<section class="card tree-card">
+  <pre class="tree" role="img" aria-label="An ASCII Christmas tree, {{ levels }} levels tall">
+{%- for row in leaves %}<span class="{{ 'tree-star' if loop.first else 'tree-leaves' }}">{{ row }}</span>
+{% endfor %}
+{%- for row in trunk %}<span class="tree-trunk">{{ row }}</span>
+{% endfor %}<span class="tree-pot">{{ pot }}</span></pre>
+</section>
+
+{{ ui.terminal_note(project) }}
+{% endblock %}

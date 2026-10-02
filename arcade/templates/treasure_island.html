@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% import '_ui.html' as ui %}
+{% block content %}
+{{ ui.page_head(project) }}
+{{ ui.flashes() }}
+
+<pre class="banner" aria-hidden="true">{{ banner.strip('\n') }}</pre>
+
+{% if path %}
+<p class="breadcrumb"><span class="sr-only">Your path so far: </span>{{ path|join(' → ') }}</p>
+{% endif %}
+
+{% if is_ending %}
+  <section class="card result {{ 'result-win' if scene.won else 'result-lose' }}" role="status">
+    <h2>{{ scene.message }}</h2>
+    <form method="post"><button class="btn btn-primary" name="action" value="restart" autofocus>Play again</button></form>
+  </section>
+{% else %}
+  <section class="card story">
+    {% if not path %}<p>Welcome to Treasure Island. Your mission is to find the treasure!</p>{% endif %}
+    <h2>{{ scene.prompt }}</h2>
+    <form method="post" class="story-choices">
+      {% for answer in scene.choices %}
+        <button class="btn btn-choice" name="answer" value="{{ answer }}">{{ answer|title }}</button>
+      {% endfor %}
+    </form>
+  </section>
+  {% if path %}
+  <form method="post" class="center"><button class="btn btn-ghost" name="action" value="restart">Start over</button></form>
+  {% endif %}
+{% endif %}
+
+{{ ui.terminal_note(project) }}
+{% endblock %}
